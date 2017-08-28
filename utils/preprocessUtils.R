@@ -13,7 +13,7 @@ readTxtData <- function(path = "") {
 
 
 # preprocess the text -------------------------------
-textPreprocess <- function(df, bigram = FALSE) {
+textPreprocess <- function(df, grams = 0) {
   
   
   # remove punctuation and convert to lower case
@@ -28,7 +28,16 @@ textPreprocess <- function(df, bigram = FALSE) {
   
   
   # parse the text
-  if(bigram == TRUE) {
+  if(grams == 1) {
+    
+    cat("Parsing text into 1-grams\n\n")
+    tidy <- df %>% 
+      select(ID, txt) %>% 
+      unnest_tokens(word, txt)
+    
+    
+    
+  } else if(grams == 2) {
     
     cat("Parsing text into 2-grams\n\n")
     tidy <- df %>% 
@@ -37,10 +46,11 @@ textPreprocess <- function(df, bigram = FALSE) {
     
   } else {
     
-    cat("Parsing text into 1-grams\n\n")
+    cat("Parsing text into 3-grams\n\n")
     tidy <- df %>% 
       select(ID, txt) %>% 
-      unnest_tokens(word, txt)
+      unnest_tokens(word, txt, token = "ngrams", n = 3)
+    
   }
   
   

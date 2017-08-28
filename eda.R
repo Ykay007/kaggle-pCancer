@@ -43,18 +43,20 @@ test %<>% mutate_at(vars(-ID), funs(factor))
 # some NLP -----------------
 
 # train: text preprocessing
-t1  <- textPreprocess(df = train_txt) # train
-t1b <- textPreprocess(df = train_txt, bigram = TRUE) # bigrams
+t1  <- textPreprocess(df = train_txt, grams = "1") # 1-gram
+t1b <- textPreprocess(df = train_txt, grams = "2") # bigrams
+t1t <- textPreprocess(df = train_txt, grams = "3") # trigrams
 
 # combine 1-gram and 2-grams
-tr_combined <- bind_rows(t1, t1b)
+tr_combined <- bind_rows(t1, t1b, t1t)
 
 # test: text preprocessing
-t2  <- textPreprocess(df = test_txt)  # test
-t2b <- textPreprocess(df = test_txt, bigram = TRUE)  # bigrams
+t2  <- textPreprocess(df = test_txt, grams = "1")  # 1-gram
+t2b <- textPreprocess(df = test_txt, grams = "2")  # bigrams
+t2t <- textPreprocess(df = test_txt, grams = "3")  # trigrams
 
 # combine 1-gram and 2-grams
-tst_combined <- bind_rows(t2, t2b)
+tst_combined <- bind_rows(t2, t2b, t2t)
 
 # add the response for t1
 t1_class <- full_join(tr_combined, train %>%  select(Class, ID), by = "ID")
